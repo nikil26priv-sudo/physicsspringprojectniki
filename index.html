@@ -8,13 +8,13 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Instrument Sans', sans-serif; background: #f8f8f6; color: #1a1a1a; padding: 2.5rem; min-height: 100vh; }
-
+ 
   h1 { font-family: 'DM Serif Display', serif; font-size: 32px; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
   h1 em { font-style: italic; color: #2563eb; }
   .sub { font-size: 14px; color: #7a8694; font-family: 'DM Mono', monospace; margin-bottom: 2rem; }
-
+ 
   .card { background: #fff; border: 1px solid #e8e8e4; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
-
+ 
   /* Controls */
   .controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; align-items: end; margin-bottom: 1.5rem; }
   .ctrl-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #7a8694; margin-bottom: 6px; }
@@ -25,14 +25,14 @@
   .result-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: .75rem 1rem; }
   .result-box .val { font-family: 'DM Serif Display', serif; font-size: 28px; color: #2563eb; line-height: 1; }
   .result-box .unit { font-size: 11px; color: #2563eb; margin-top: 3px; font-family: 'DM Mono', monospace; }
-
+ 
   /* Add row */
   .add-row { display: flex; gap: 8px; align-items: center; margin-bottom: 1.25rem; }
   .add-row input { font-family: 'DM Mono', monospace; font-size: 14px; padding: 7px 12px; border: 1px solid #e8e8e4; border-radius: 6px; width: 170px; color: #1a1a1a; background: #fff; }
   .add-row input:focus { outline: none; border-color: #2563eb; }
   .btn-primary { font-family: 'DM Mono', monospace; font-size: 12px; padding: 8px 16px; border-radius: 6px; border: 1.5px solid #2563eb; background: #2563eb; color: #fff; cursor: pointer; letter-spacing: .04em; }
   .btn-secondary { font-family: 'DM Mono', monospace; font-size: 12px; padding: 8px 16px; border-radius: 6px; border: 1.5px solid #e8e8e4; background: #fff; color: #7a8694; cursor: pointer; letter-spacing: .04em; }
-
+ 
   /* Table */
   .tbl-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-family: 'DM Mono', monospace; font-size: 13px; }
@@ -42,16 +42,16 @@
   tbody tr:nth-child(even) { background: #fafaf9; }
   td:first-child { color: #2563eb; font-weight: 600; }
   td.fval { color: #1a1a1a; font-weight: 700; font-size: 14px; }
-
+ 
   /* Note */
   .note { font-size: 13px; color: #7a8694; line-height: 1.6; margin-top: 1.25rem; padding: .85rem 1rem; background: #fafaf9; border: 1px solid #e8e8e4; border-radius: 8px; }
   .note strong { color: #3a4452; font-weight: 500; }
 </style>
 </head>
 <body>
-
+ 
 <h1>Simulation</h1>
-
+ 
 <div class="card">
   <!-- Controls -->
   <div style="display:flex;gap:2rem;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap">
@@ -64,14 +64,14 @@
       <div style="font-family:'DM Mono',monospace;font-size:20px;color:#2563eb;font-weight:500">5.0</div>
     </div>
   </div>
-
+ 
   <!-- Add h -->
   <div class="add-row">
     <input id="hInput" type="number" step="0.1" min="0.001" placeholder="add h value (cm)">
     <button class="btn-primary" onclick="addRow()">ADD h</button>
     <button class="btn-secondary" onclick="reset()">RESET</button>
   </div>
-
+ 
   <!-- Table -->
   <div class="tbl-wrap">
     <table>
@@ -88,17 +88,14 @@
       <tbody id="tbody"></tbody>
     </table>
   </div>
-
-  <div class="note">
-    <strong>No linearization.</strong> Every row uses the exact formula f(h) = h / tan(α − θ₂) with full Snell's law. As h → 0, f(h) converges to nR/(n−1) — the value your derivation proves. Large h values diverge, showing where the approximation breaks down.
-  </div>
+ 
 </div>
-
+ 
 <script>
 let N = 2.0, R = 5.0;
 const DEFAULT_H = [0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.75, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 4.9];
 let hVals = [...DEFAULT_H];
-
+ 
 function fOfH(h) {
   if (h <= 0 || h >= R) return null;
   const alpha = Math.asin(h / R);
@@ -109,9 +106,9 @@ function fOfH(h) {
   if (Math.abs(Math.tan(beta)) < 1e-12) return null;
   return h / Math.tan(beta);
 }
-
+ 
 function deg(r) { return (r * 180 / Math.PI).toFixed(4) + '°'; }
-
+ 
 function build() {
   const fp = N * R / (N - 1);
   const tbody = document.getElementById('tbody');
@@ -142,12 +139,12 @@ function build() {
     tbody.appendChild(tr);
   });
 }
-
+ 
 function adj(p, d) {
   if (p === 'n') N = Math.max(1.1, Math.min(3.0, Math.round((N + d) * 10) / 10));
   build();
 }
-
+ 
 function addRow() {
   const v = parseFloat(document.getElementById('hInput').value);
   if (isNaN(v) || v <= 0) return;
@@ -155,9 +152,9 @@ function addRow() {
   document.getElementById('hInput').value = '';
   build();
 }
-
+ 
 function reset() { hVals = [...DEFAULT_H]; build(); }
-
+ 
 document.getElementById('hInput').addEventListener('keydown', e => { if (e.key === 'Enter') addRow(); });
 build();
 </script>
