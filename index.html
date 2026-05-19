@@ -82,7 +82,6 @@
           <th>θ₂ = arcsin(sinα/n)</th>
           <th>β = α − θ₂</th>
           <th>f(h) = h/tanβ (cm)</th>
-          <th>% from nR/(n−1)</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -133,8 +132,7 @@ function build() {
         <td>${deg(a)}</td>
         <td>${deg(t2)}</td>
         <td>${deg(b)}</td>
-        <td class="fval">${fh.toFixed(4)}</td>
-        <td>${badge}</td>`;
+        <td class="fval">${fh.toFixed(4)}</td>`;
     }
     tbody.appendChild(tr);
   });
